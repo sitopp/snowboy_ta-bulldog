@@ -7,6 +7,9 @@ import time
 import wave
 import os
 import logging
+import requests  #sito
+import serial #sito arudino call
+import subprocess #sito
 
 logging.basicConfig()
 logger = logging.getLogger("snowboy")
@@ -55,7 +58,6 @@ def play_audio_file(fname=DETECT_DING):
     stream_out.close()
     audio.terminate()
 
-
 class HotwordDetector(object):
     """
     Snowboy decoder to detect whether a keyword specified by `decoder_model`
@@ -74,6 +76,12 @@ class HotwordDetector(object):
                  sensitivity=[],
                  audio_gain=1):
 
+        #sito debug
+        logger.info(str(decoder_model))
+
+        global decoder_model_target 
+        decoder_model_target = str(decoder_model)
+        
         def audio_callback(in_data, frame_count, time_info, status):
             self.ring_buffer.extend(in_data)
             play_data = chr(0) * len(in_data)
@@ -167,6 +175,27 @@ class HotwordDetector(object):
                 message += time.strftime("%Y-%m-%d %H:%M:%S",
                                          time.localtime(time.time()))
                 logger.info(message)
+ 
+                #sito debug
+                logger.info(str(decoder_model_target))
+
+                #sito
+                try:
+                    if 'beer' in decoder_model_target:
+                        elem = 1
+                    if 'edamame' in decoder_model_target:
+                        elem = 2
+
+                    request_string = "python /home/pi/Documents/snowboy/stab.py " + str(elem)
+                    
+                    res = subprocess.check_output([request_string],shell=True)
+                    res = res.decode("utf-8") 
+                    print(res) # get 2
+                except:
+                    print("error")
+
+
+
                 callback = detected_callback[ans-1]
                 if callback is not None:
                     callback()
@@ -181,3 +210,4 @@ class HotwordDetector(object):
         self.stream_in.stop_stream()
         self.stream_in.close()
         self.audio.terminate()
+
