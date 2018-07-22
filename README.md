@@ -12,6 +12,9 @@ snowboyを、ta-bulldogにあわせてカスタマイズするためのコード
 
 ## 手順
 
+- Raspberry Pi3にNoobsの最新版OSをインストールしておきます。
+- Wi-fiあるいは有線LANでつなぎ、作業用のマシンからssh接続できるようにしておきます。
+- Raspberry Pi3のIPアドレスは「192.168.0.13」として下記を記載しておりますが、環境にあわせて読み替えてください。
 
 ### ライブラリのインストール
 ```
@@ -96,7 +99,7 @@ INFO:snowboy:Keyword 1 detected at time: 2018-07-22 05:20:31
 
 $ cd 
 $ cd Downloads
-$ scp ./*.pmdl pi@192.168.0.19:/home/pi/Documents/snowboy/resources/.
+$ scp ./*.pmdl pi@192.168.0.13:/home/pi/Documents/snowboy/resources/.
 ```
 ### 動作確認
 
@@ -153,4 +156,53 @@ INFO:snowboy:1
 4:戻って
 5:ストップ
 ```
+そこで、ちょっと面倒ですが、全発話の単体テストをします。
+
+```
+$ python demo.py resources/beer.pmdl  
+```
+「ビール」と発話し、判定ログがでることを確認したら、ctrl+c
+```
+$ python demo.py resources/edamame.pmdl  
+```
+「えだまめ」と発話し、判定ログがでることを確認したら、ctrl+c
+```
+$ python demo.py resources/fuse.pmdl  
+```
+「伏せ」と発話し、判定ログがでることを確認したら、ctrl+c
+```
+$ python demo.py resources/modotte.pmdl  
+```
+「戻って」と発話し、判定ログがでることを確認したら、ctrl+c<br>
+※「戻って」がなかなか反応しないので、他のワードに切り替えを検討したほうが良いかもです。
+
+```
+$ python demo.py resources/stop.pmdl  
+```
+「ストップ」と発話し、判定ログがでることを確認したら、ctrl+c
+
+
+
+
+## 起動について
+
+Maker Faire Tokyoでは、上記5種類の「ホットワード」をTA-BULLDOGに認識させる予定です。<br>
+以下のように5個のプロセスをnohupで立ち上げておきます。<br>
+
+```
+$ nohup python demo.py resources/beer.pmdl  >> detect_log &
+$ nohup python demo.py resources/edamame.pmdl  >> detect_log &
+$ nohup python demo.py resources/fuse.pmdl  >> detect_log &
+$ nohup python demo.py resources/modotte.pmdl  >> detect_log &
+$ nohup python demo.py resources/stop.pmdl  >> detect_log &
+```
+平行して5個立ち上げていると、認識のレスポンスが落ちて、発話してから認識完了まで1〜2秒かかることがあります。
+
+プロセスを終了する時は、
+```
+ps -ax
+（一覧）
+kill プロセス番号
+``
+あるいは、RaspiをshutdownすればOK。
 
