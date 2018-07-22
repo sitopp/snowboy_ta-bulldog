@@ -181,10 +181,16 @@ class HotwordDetector(object):
 
                 #sito
                 try:
-                    if 'beer' in decoder_model_target:
+                    if 'beer'    in decoder_model_target:
                         elem = 1
                     if 'edamame' in decoder_model_target:
                         elem = 2
+                    if 'fuse'    in decoder_model_target:
+                        elem = 3
+                    if 'modotte' in decoder_model_target:
+                        elem = 4
+                    if 'stop'    in decoder_model_target:
+                        elem = 5
 
                     request_string = "python /home/pi/Documents/snowboy/stab.py " + str(elem)
                     
