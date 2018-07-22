@@ -14,11 +14,11 @@ snowboyを、ta-bulldogにあわせてカスタマイズするためのコード
 
 
 ### ライブラリのインストール
-
+```
 $ sudo apt-get install swig3.0 python-pyaudio python3-pyaudio sox
 $ pip install pyaudio
 $ sudo apt-get install libatlas-base-dev
-
+```
 
 ### マイクデバイスの確認とasoundの設定
 
@@ -56,12 +56,15 @@ $ mkdir snowboy
 $ cd snowboy
 $ wget https://s3-us-west-2.amazonaws.com/snowboy/snowboy-releases/rpi-arm-raspbian-8.0-1.1.0.tar.bz2
 $ tar -xvf rpi-arm-raspbian-8.0-1.1.0.tar.bz2 
+```
+「rpi-arm-raspbian-8.0-1.1.0」というディレクトリ名が長いので、中のファイルを移動してスッキリさせます。
+```
 $ mv ./rpi-arm-raspbian-8.0-1.1.0/* ./.
 $ python demo.py resources/snowboy.umdl
 ```
 
-どばっとメッセージが出る。
-最後に↓が表示されたら利用可能。
+
+実行するとどばっとメッセージが出る。最後に↓が表示されたら利用可能。
 
 ```
 Listening... Press Ctrl+C to exit
@@ -84,6 +87,32 @@ INFO:snowboy:Keyword 1 detected at time: 2018-07-22 05:20:31
 - ストップ https://snowboy.kitt.ai/hotword/24459
 
 ![snowboy_download](https://user-images.githubusercontent.com/1670181/43042778-e2f9083e-8dbf-11e8-986a-af42b2f3bb25.png)
+
+これらpmdlファイルを、Raspberry Pi3にアップロードする。
+
+```
+例）macの場合
+　ターミナルから実行
+
+$ cd 
+$ cd Downloads
+$ scp ./*.pmdl pi@192.168.0.19:/home/pi/Documents/snowboy/resources/.
+```
+### 動作確認
+
+```
+$ python demo.py resources/beer.pmdl
+（中略）
+Listening... Press Ctrl+C to exit
+```
+
+マイクに向かって「ビール」と呼びかけ、以下のメッセージが出ればテストOK。
+
+```
+INFO:snowboy:Keyword 1 detected at time: 日時
+INFO:snowboy:resources/beer.pmdl
+
+```
 
 ### snowboydecorder.pyのpatchあて
 
@@ -108,6 +137,7 @@ Listening... Press Ctrl+C to exit
 ```
 
 マイクに向かって「ビール」と呼びかけ、以下のメッセージが出ればテストOK。
+最後に「INFO:snowboy:1」が出るところがキモ。
 
 ```
 INFO:snowboy:Keyword 1 detected at time: 2018-07-22 06:03:06
@@ -115,8 +145,8 @@ INFO:snowboy:resources/beer.pmdl
 INFO:snowboy:1
 ```
 
-なお、最後の「INFO:snowboy:1」の「1」は、ビールを表すパラメタです。
-ほかに以下のバリエーションがあります。
+なお、「INFO:snowboy:1」の「1」は、ビールを表すパラメタです。
+他に以下のバリエーションがあります。
 
 ```
 1:ビール 
