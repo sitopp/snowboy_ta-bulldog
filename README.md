@@ -200,3 +200,12 @@ request_string = "python /home/pi/Documents/snowboy/stab.py " + str(elem)
 ```
 なおelemには前述の1〜5のパラメタが入りますので、画像認識スクリプトで使ってください。
 
+
+## 補足
+画像認識スクリプトがpython3環境なので、あわせてRaspberry Pi3にpython3.6をインストールし、snowboyを動かそうとしたのですが、依存関係が解消できず、暫定的に、stab.pyをpython3.6で起動するよう、修正しました。<br>
+
+
+snowboydecoder.py　L.195
+```
+request_string = "python3.6 /home/pi/Documents/snowboy/stab.py " + str(elem)
+```
