@@ -192,7 +192,7 @@ class HotwordDetector(object):
                     if 'stop'    in decoder_model_target:
                         elem = 5
 
-                    request_string = "python /home/pi/Documents/snowboy/stab.py " + str(elem)
+                    request_string = "python3.6 /home/pi/Documents/snowboy/stab.py " + str(elem)
                     
                     res = subprocess.check_output([request_string],shell=True)
                     res = res.decode("utf-8") 

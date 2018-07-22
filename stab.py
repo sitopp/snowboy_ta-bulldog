@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-import requests  
+#import requests  
 import logging
 
 logging.basicConfig()
