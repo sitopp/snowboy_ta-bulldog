@@ -156,32 +156,16 @@ INFO:snowboy:1
 4:戻って
 5:ストップ
 ```
-そこで、ちょっと面倒ですが、全発話の単体テストをします。
+そこで、ちょっと面倒ですが、1個づつ起動して単体テストをします。
 
 ```
-$ python demo.py resources/beer.pmdl  
+$ python demo.py resources/beer.pmdl  →「ビール」と発話し、判定ログがでることを確認したら、ctrl+c
+$ python demo.py resources/edamame.pmdl  →「えだまめ」と発話し、判定ログがでることを確認したら、ctrl+c
+$ python demo.py resources/fuse.pmdl  →「伏せ」と発話し、判定ログがでることを確認したら、ctrl+c
+$ python demo.py resources/modotte.pmdl  →「戻って」と発話し、判定ログがでることを確認したら、ctrl+c
+$ python demo.py resources/stop.pmdl  →「ストップ」と発話し、判定ログがでることを確認したら、ctrl+c
 ```
-「ビール」と発話し、判定ログがでることを確認したら、ctrl+c
-```
-$ python demo.py resources/edamame.pmdl  
-```
-「えだまめ」と発話し、判定ログがでることを確認したら、ctrl+c
-```
-$ python demo.py resources/fuse.pmdl  
-```
-「伏せ」と発話し、判定ログがでることを確認したら、ctrl+c
-```
-$ python demo.py resources/modotte.pmdl  
-```
-「戻って」と発話し、判定ログがでることを確認したら、ctrl+c<br>
-※「戻って」がなかなか反応しないので、他のワードに切り替えを検討したほうが良いかもです。
-
-```
-$ python demo.py resources/stop.pmdl  
-```
-「ストップ」と発話し、判定ログがでることを確認したら、ctrl+c
-
-
+※「戻って」が反応しないとき、「戻れ」というとなぜか反応するときがあります。
 
 
 ## 起動について
@@ -203,6 +187,16 @@ $ nohup python demo.py resources/stop.pmdl  >> detect_log &
 ps -ax
 （一覧）
 kill プロセス番号
-``
+```
 あるいは、RaspiをshutdownすればOK。
+
+## 画像認識スクリプトの起動箇所
+
+snowboydecoder.py の190〜200行めあたりに、stab.pyを呼び出している箇所があるので、
+ここを画像認識スクリプトに書き換えてください。
+
+```
+request_string = "python /home/pi/Documents/snowboy/stab.py " + str(elem)
+```
+なおelemには前述の1〜5のパラメタが入りますので、画像認識スクリプトで使ってください。
 
