@@ -64,7 +64,7 @@ $ python demo.py resources/snowboy.umdl
 ```
 
 
-実行するとどばっとメッセージが出る。最後に↓が表示されたら利用可能。
+上記を行するとドバッとメッセージが出る。最後に↓が表示されたら呼びかける準備ができてる。
 
 ```
 Listening... Press Ctrl+C to exit
@@ -110,8 +110,6 @@ Listening... Press Ctrl+C to exit
 
 ```
 INFO:snowboy:Keyword 1 detected at time: 日時
-INFO:snowboy:resources/beer.pmdl
-
 ```
 
 ### snowboydecorder.pyのpatchあて
