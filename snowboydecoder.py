@@ -191,6 +191,16 @@ class HotwordDetector(object):
                         elem = 4
                     if 'stop'    in decoder_model_target:
                         elem = 5
+                    if 'mae'     in decoder_model_target:
+                        elem = 6
+                    if 'hidari'  in decoder_model_target:
+                        elem = 7
+                    if 'migi'    in decoder_model_target:
+                        elem = 8
+                    if 'ushiro'  in decoder_model_target:
+                        elem = 9
+                    if 'tatte'   in decoder_model_target:
+                        elem = 10
 
                     request_string = "python3.6 /home/pi/Documents/snowboy/stab.py " + str(elem)
                     
