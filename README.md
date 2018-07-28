@@ -26,6 +26,21 @@ $ sudo apt-get install libatlas-base-dev
 ### マイクデバイスの確認とasoundの設定
 
 ```
+$ aplay -l
+**** List of PLAYBACK Hardware Devices ****
+card 0: ALSA [bcm2835 ALSA], device 0: bcm2835 ALSA [bcm2835 ALSA]
+  Subdevices: 7/7
+  Subdevice #0: subdevice #0
+  Subdevice #1: subdevice #1
+  Subdevice #2: subdevice #2
+  Subdevice #3: subdevice #3
+  Subdevice #4: subdevice #4
+  Subdevice #5: subdevice #5
+  Subdevice #6: subdevice #6
+card 0: ALSA [bcm2835 ALSA], device 1: bcm2835 ALSA [bcm2835 IEC958/HDMI]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+
 $ arecord -l
 **** List of CAPTURE Hardware Devices ****
 card 1: U0x46d0x825 [USB Device 0x46d:0x825], device 0: USB Audio [USB Audio]
@@ -33,7 +48,7 @@ card 1: U0x46d0x825 [USB Device 0x46d:0x825], device 0: USB Audio [USB Audio]
   Subdevice #0: subdevice #0
 
 ```
-
+スピーカーは、card 1,device 0
 USBマイクは、card 1、device 0として認識されている。
 そこで、asoundの設定を以下のようにする。
 
@@ -42,6 +57,10 @@ $ vi ~/.asoundrc
 =====
 pcm.!default {
   type asym
+   playback.pcm {
+     type plug
+     slave.pcm "hw:0,0"
+   }  
    capture.pcm {
      type plug
      slave.pcm "hw:1,0"
@@ -55,19 +74,20 @@ pcm.!default {
 
 ```
 $ cd Documents
-$ mkdir snowboy
-$ cd snowboy
 $ wget https://s3-us-west-2.amazonaws.com/snowboy/snowboy-releases/rpi-arm-raspbian-8.0-1.1.0.tar.bz2
 $ tar -xvf rpi-arm-raspbian-8.0-1.1.0.tar.bz2 
 ```
-「rpi-arm-raspbian-8.0-1.1.0」というディレクトリ名が長いので、中のファイルを移動してスッキリさせます。
+「rpi-arm-raspbian-8.0-1.1.0」というディレクトリ名が長いので改名します
 ```
-$ mv ./rpi-arm-raspbian-8.0-1.1.0/* ./.
+$ mv rpi-arm-raspbian-8.0-1.1.0 snowboy
+$ cd snowboy
+```
+さっそくテスト実行します。
+```
 $ python demo.py resources/snowboy.umdl
 ```
 
-
-上記を行するとドバッとメッセージが出る。最後に↓が表示されたら呼びかける準備ができてる。
+最後に↓が表示されたら呼びかける準備ができてる。
 
 ```
 Listening... Press Ctrl+C to exit
