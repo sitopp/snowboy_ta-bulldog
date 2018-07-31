@@ -154,6 +154,12 @@ INFO:snowboy:Keyword 1 detected at time: 2018-07-22 05:20:31
 - 伏せ https://snowboy.kitt.ai/hotword/24461
 - 戻って https://snowboy.kitt.ai/hotword/24460
 - ストップ https://snowboy.kitt.ai/hotword/24459
+- 前　https://snowboy.kitt.ai/hotword/24783
+- 左 hhttps://snowboy.kitt.ai/hotword/24784
+- 右 https://snowboy.kitt.ai/hotword/24785
+- 後ろ https://snowboy.kitt.ai/hotword/24786
+- 立って https://snowboy.kitt.ai/hotword/24787
+
 （これらは一人分の声だけで登録したものをこのレポジトリの中のresourcesディレクトリにも入れてあります。）
 
 
@@ -191,8 +197,9 @@ $ mkdir patch
 $ cd patch
 $ git clone https://github.com/sitopp/snowboy_ta-bulldog.git
 $ cd snowboy_ta-bulldog/
-$ cp ./snowboydecoder.py /home/pi/Documents/snowboy/.
-$ cp ./stab.py /home/pi/Documents/snowboy/.
+$ mv ./snowboydecoder.py /home/pi/Documents/snowboy/.
+$ mv ./stab.py /home/pi/Documents/snowboy/.
+$ mv resources/ ../.
 ```
 stab.pyは、正式なつなぎこみ先ができるまでのテスト用です。
 
@@ -251,8 +258,8 @@ $ python demo.py resources/tatte.pmdl  →「立って」と発話し、以下�
 
 ## 起動について
 
-Maker Faire Tokyoでは、上記5種類の「ホットワード」をTA-BULLDOGに認識させる予定です。<br>
-以下のように5個のプロセスをnohupで立ち上げておきます。<br>
+Maker Faire Tokyoでは、上記10種類の「ホットワード」をTA-BULLDOGに認識させる予定です。<br>
+以下のように10個のプロセスをnohupで立ち上げておきます。<br>
 
 ```
 $ nohup python demo.py resources/beer.pmdl  >> detect_log &
@@ -260,6 +267,12 @@ $ nohup python demo.py resources/edamame.pmdl  >> detect_log &
 $ nohup python demo.py resources/fuse.pmdl  >> detect_log &
 $ nohup python demo.py resources/modotte.pmdl  >> detect_log &
 $ nohup python demo.py resources/stop.pmdl  >> detect_log &
+$ nohup python demo.py resources/mae.pmdl  >> detect_log &
+$ nohup python demo.py resources/migi.pmdl  >> detect_log &
+$ nohup python demo.py resources/hidari.pmdl  >> detect_log &
+$ nohup python demo.py resources/ushiro.pmdl  >> detect_log &
+$ nohup python demo.py resources/tatte.pmdl  >> detect_log &
+
 ```
 平行して5個立ち上げていると、認識のレスポンスが落ちて、発話してから認識完了まで1〜2秒かかることがあります。
 
@@ -284,7 +297,7 @@ request_string = "python /home/pi/Documents/snowboy/stab.py " + str(elem)
 
 ## 補足
 画像認識スクリプトがpython3環境なので、あわせてRaspberry Pi3にpython3.6をインストールし、snowboyを動かそうとしたのですが、依存関係が解消できず、暫定的に、stab.pyをpython3.6で起動するよう、修正しました。<br>
-
+python3.6が入ってないと、マイクで聞き取りテストをしてる時にログを見ていると、聞き取れた時に「python3.6: not found」というエラーが出ます
 
 snowboydecoder.py　L.195
 ```
