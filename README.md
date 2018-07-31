@@ -199,7 +199,7 @@ $ git clone https://github.com/sitopp/snowboy_ta-bulldog.git
 $ cd snowboy_ta-bulldog/
 $ mv ./snowboydecoder.py /home/pi/Documents/snowboy/.
 $ mv ./stab.py /home/pi/Documents/snowboy/.
-$ mv resources/ ../.
+$ mv ./resources/ /home/pi/Documents/snowboy/.
 ```
 stab.pyは、正式なつなぎこみ先ができるまでのテスト用です。
 
