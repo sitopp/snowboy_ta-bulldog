@@ -25,6 +25,8 @@ $ sudo apt-get install libatlas-base-dev
 
 ### マイクデバイスの確認とasoundの設定
 
+(1) usbポートにwebカメラ(https://www.amazon.co.jp/gp/product/B003YUB660/ref=oh_aui_detailpage_o04_s00?ie=UTF8&psc=1)をさした時の例
+
 ```
 $ aplay -l
 **** List of PLAYBACK Hardware Devices ****
@@ -69,6 +71,50 @@ pcm.!default {
 =====
 ```
 
+(2) 上記に加えて、USBマイク(https://www.amazon.co.jp/gp/product/B01M7YIYZV/)をさした時の例
+
+```
+pi@raspberrypi:~/Documents/snowboy $ aplay -l
+**** ハードウェアデバイス PLAYBACK のリスト ****
+カード 0: ALSA [bcm2835 ALSA], デバイス 0: bcm2835 ALSA [bcm2835 ALSA]
+  サブデバイス: 7/7
+  サブデバイス #0: subdevice #0
+  サブデバイス #1: subdevice #1
+  サブデバイス #2: subdevice #2
+  サブデバイス #3: subdevice #3
+  サブデバイス #4: subdevice #4
+  サブデバイス #5: subdevice #5
+  サブデバイス #6: subdevice #6
+カード 0: ALSA [bcm2835 ALSA], デバイス 1: bcm2835 ALSA [bcm2835 IEC958/HDMI]
+  サブデバイス: 1/1
+  サブデバイス #0: subdevice #0
+pi@raspberrypi:~/Documents/snowboy $ arecord -l
+**** ハードウェアデバイス CAPTURE のリスト ****
+カード 1: U0x46d0x825 [USB Device 0x46d:0x825], デバイス 0: USB Audio [USB Audio]
+  サブデバイス: 1/1
+  サブデバイス #0: subdevice #0
+カード 2: Microphone [USB Microphone], デバイス 0: USB Audio [USB Audio]
+  サブデバイス: 1/1
+  サブデバイス #0: subdevice #0
+
+```
+```
+$ vi ~/.asoundrc
+=====
+pcm.!default {
+  type asym
+   playback.pcm {
+     type plug
+     slave.pcm "hw:0,0"
+   }  
+   capture.pcm {
+     type plug
+     slave.pcm "hw:2,0"
+   }
+}
+=====
+```
+
 ### snowboyのダウンロードとテスト
 
 
@@ -108,6 +154,8 @@ INFO:snowboy:Keyword 1 detected at time: 2018-07-22 05:20:31
 - 伏せ https://snowboy.kitt.ai/hotword/24461
 - 戻って https://snowboy.kitt.ai/hotword/24460
 - ストップ https://snowboy.kitt.ai/hotword/24459
+（これらは一人分の声だけで登録したものをこのレポジトリの中のresourcesディレクトリにも入れてあります。）
+
 
 ![snowboy_download](https://user-images.githubusercontent.com/1670181/43042778-e2f9083e-8dbf-11e8-986a-af42b2f3bb25.png)
 
@@ -175,6 +223,11 @@ INFO:snowboy:1
 3:ふせ
 4:戻って
 5:ストップ
+6:前
+7:右
+8:左
+9:後ろ
+10:立って
 ```
 そこで、ちょっと面倒ですが、1個づつ起動して単体テストをします。
 
@@ -185,6 +238,14 @@ $ python demo.py resources/fuse.pmdl  →「伏せ」と発話し、判定ログ
 $ python demo.py resources/modotte.pmdl  →「戻って」と発話し、判定ログがでることを確認したら、ctrl+c
 $ python demo.py resources/stop.pmdl  →「ストップ」と発話し、判定ログがでることを確認したら、ctrl+c
 ```
+```
+$ python demo.py resources/mae.pmdl  →「前」と発話し、以下同文
+$ python demo.py resources/migi.pmdl  →「右」と発話し、以下同文
+$ python demo.py resources/hidari.pmdl  →「左」と発話し、以下同文
+$ python demo.py resources/ushiro.pmdl  →「後ろ」と発話し、以下同文
+$ python demo.py resources/tatte.pmdl  →「立って」と発話し、以下同文
+```
+
 ※「戻って」が反応しないとき、「戻れ」というとなぜか反応するときがあります。
 
 
